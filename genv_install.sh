@@ -5,3 +5,4 @@ python3 genv_run_time.py
 systemctl restart docker
 cp -f $HOME/genv/genv-docker/genv-docker.sh /usr/local/bin/genv-docker
 genv-docker run --rm ubuntu env | grep GENV_
+echo "Burrow install success"
