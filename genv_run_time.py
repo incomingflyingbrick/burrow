@@ -24,7 +24,7 @@ def manage_docker_daemon_file():
         logging.info(f"File created and JSON content written to {file_path}")
     else:
         # Read and print the content of the file
-        with open(file_path, 'w') as file:
+        with open(file_path, 'r+') as file:
             try:
                 content = json.load(file)
                 logging.info(f"Content of {file_path}:\n{json.dumps(content, indent=4)}")
@@ -34,12 +34,13 @@ def manage_docker_daemon_file():
                     logging.info('The key "runtimes" exists in the JSON content.')
                     content['runtimes']['genv'] = {"path":"{}/genv/genv-docker/genv-container-runtime.py".format(home_path)}
                     logging.info("Genv docker runtime add {}".format(content))
-                    json.dump(content, file, indent=4)
                 else:
                     content['runtimes']={}
                     content['runtimes']['genv'] = {"path":"{}/genv/genv-docker/genv-container-runtime.py".format(home_path)}
                     logging.info("Genv docker runtime add {}".format(content))
-                    json.dump(content, file, indent=4)
+                file.seek(0)
+                file.truncate()
+                json.dump(content, file, indent=4)
             except json.JSONDecodeError:
                 logging.info(f"Error: The file {file_path} does not contain valid JSON.")
 
